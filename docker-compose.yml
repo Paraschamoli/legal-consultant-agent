@@ -1,0 +1,27 @@
+services:
+  legal_consultant_agent:
+    build:
+      context: .
+      dockerfile: Dockerfile.agent
+    container_name: legal_consultant_agent
+    ports:
+      - "3773:3773"
+    environment:
+      - OPENROUTER_API_KEY=${OPENROUTER_API_KEY}
+      
+
+    env_file:
+      - .env
+    volumes:
+      - ./legal_consultant_agent:/app/legal_consultant_agent
+      - ./agent_config.json:/app/agent_config.json
+    restart: unless-stopped
+    networks:
+      - legal_consultant_agent-network
+    
+
+networks:
+  legal_consultant_agent-network:
+    driver: bridge
+
+

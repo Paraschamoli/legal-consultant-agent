@@ -1,0 +1,63 @@
+{
+  "author": "paras25619@gmail.com",
+  "name": "legal-consultant-agent",
+  "description": "AI-powered legal information assistant providing general legal education, explanations of legal concepts, and referrals to qualified attorneys. NOT a substitute for professional legal advice. Always consult licensed attorneys for legal matters.",
+  "version": "1.0.0",
+  "recreate_keys": false,
+  
+  "skills": [
+    "skills/legal-consultant"
+  ],
+  
+  "capabilities": {},
+  
+  "agent_trust": "low",
+  "debug_mode": true,
+  "debug_level": 2,
+  
+  "deployment": {
+    "url": "http://127.0.0.1:3773",
+    "expose": true,
+    "protocol_version": "1.0.0",
+    "proxy_urls": ["127.0.0.1"],
+    "cors_origins": ["*"]
+  },
+  
+  "storage": {
+    "type": "memory"
+  },
+  
+  "scheduler": {
+    "type": "memory"
+  },
+  
+  "num_history_sessions": 5,
+  
+  "environment_variables": [
+    {
+      "key": "OPENAI_API_KEY",
+      "description": "OpenAI API key for LLM calls (alternative to OpenRouter)",
+      "required": false
+    },
+    {
+      "key": "OPENROUTER_API_KEY",
+      "description": "OpenRouter API key for LLM calls (alternative to OpenAI)",
+      "required": false
+    },
+    {
+      "key": "MODEL_NAME",
+      "description": "Model ID for OpenRouter (default: openai/gpt-4o)",
+      "required": false
+    },
+    {
+      "key": "MEM0_API_KEY",
+      "description": "Mem0 API key for memory operations",
+      "required": false
+    },
+    {
+      "key": "DATABASE_URL",
+      "description": "PostgreSQL database URL for vector database (optional)",
+      "required": false
+    }
+  ]
+}

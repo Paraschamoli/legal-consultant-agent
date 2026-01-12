@@ -1,0 +1,256 @@
+id: legal-consultant-v1
+name: legal-consultant
+version: 1.0.0
+author: paras25619@gmail.com
+
+# Description
+description: |
+  AI-powered legal information assistant providing general legal education and guidance.
+  This skill helps users understand legal concepts, terminology, and procedures while
+  emphasizing that it is NOT a substitute for professional legal advice. It always
+  includes mandatory disclaimers and referrals to qualified attorneys for actual legal matters.
+
+# Tags and Modes
+tags:
+  - legal
+  - consultant
+  - education
+  - information
+  - law
+  - attorney-referral
+  - disclaimer
+  - compliance
+  - risk-management
+
+input_modes:
+  - text/plain
+  - application/json
+
+output_modes:
+  - text/plain
+  - application/json
+  - text/markdown
+
+# Example Queries
+examples:
+  - "Explain what constitutes a breach of contract in simple terms"
+  - "What are the basic elements required for a valid will?"
+  - "How does the statute of limitations work for personal injury cases?"
+  - "What's the difference between a misdemeanor and a felony?"
+  - "What should I consider before signing a rental agreement?"
+  - "How does intellectual property protection work for small businesses?"
+  - "What are the general steps in a civil litigation process?"
+  - "Explain the concept of 'due process' in the legal system"
+
+# Requirements
+requirements:
+  packages:
+    - agno>=2.2.0
+    - openai>=2.11.0
+    - python-dotenv>=1.0.1
+  system: []
+  min_memory_mb: 512
+  external_services:
+    - OpenAI API or OpenRouter API (for LLM capabilities)
+    - Mem0 API (optional, for memory operations)
+    - PostgreSQL (optional, for vector database)
+
+# Performance Metrics
+performance:
+  avg_processing_time_ms: 8000
+  max_concurrent_requests: 3
+  memory_per_request_mb: 512
+  scalability: horizontal
+
+# Tool Restrictions
+allowed_tools:
+  - Mem0Tools
+  - Think
+  - Analyze
+  - Reason
+  - Extract
+  - ReasoningTools
+
+# Rich Documentation
+documentation:
+  overview: |
+    This skill specializes in providing general legal information and educational guidance
+    while maintaining strict boundaries to avoid unauthorized practice of law. It always
+    includes clear disclaimers, emphasizes the importance of consulting qualified attorneys,
+    and provides referral guidance for professional legal help.
+
+  use_cases:
+    when_to_use:
+      - Learning basic legal concepts and terminology
+      - Understanding general legal procedures
+      - Getting preliminary information before attorney consultation
+      - Educational research about legal systems
+      - Understanding when professional legal help is needed
+
+    when_not_to_use:
+      - Specific legal advice for personal situations
+      - Interpretation of laws for individual cases
+      - Legal document preparation or review
+      - Predictions about legal outcomes
+      - Strategy recommendations for legal matters
+      - Emergency legal situations
+
+  input_structure: |
+    Accepts legal education queries with emphasis on general concepts:
+
+    {
+      "query": "Legal topic or question",
+      "detail_level": "basic|detailed",  # Optional
+      "jurisdiction_context": "general|US|UK|CA"  # Optional
+    }
+
+    Constraints:
+    - Max query length: 500 characters
+    - Timeout: 120 seconds
+    - Language: English primary
+    - Scope: General legal education only
+
+  output_format: |
+    Structured Legal Information Output:
+    {
+      "success": true,
+      "legal_response": {
+        "disclaimer": "Mandatory legal disclaimer text...",
+        "educational_content": "General legal information and explanations...",
+        "key_concepts": ["concept1", "concept2", "concept3"],
+        "important_considerations": ["consideration1", "consideration2"],
+        "when_to_consult_attorney": "Guidance on seeking professional help...",
+        "additional_resources": ["resource1", "resource2"]
+      },
+      "metadata": {
+        "query": "original_query",
+        "processing_time_ms": 2500,
+        "response_type": "general_legal_education",
+        "disclaimer_included": true,
+        "jurisdiction_context": "general"
+      }
+    }
+
+  error_handling:
+    - "Specific legal advice requests: Politely decline and refer to attorneys"
+    - "Complex case analysis: Acknowledge limitations and suggest professional consultation"
+    - "Jurisdiction-specific questions: Note general principles and suggest local counsel"
+    - "Emergency situations: Recommend immediate professional consultation"
+    - "Ethical boundaries: Explain limitations and maintain professional boundaries"
+
+  examples:
+    - title: "Contract Law Basics"
+      input:
+        query: "What are the basic elements of a valid contract?"
+        detail_level: "basic"
+      output:
+        success: true
+        legal_response:
+          disclaimer: "**Legal Information Disclaimer**: I am an AI assistant providing general legal information for educational purposes..."
+          educational_content: "A valid contract typically requires: 1) Offer, 2) Acceptance, 3) Consideration, 4) Capacity, 5) Legality..."
+          key_concepts: ["offer", "acceptance", "consideration", "capacity", "legality"]
+          when_to_consult_attorney: "Consult an attorney when drafting, reviewing, or disputing contracts..."
+        metadata:
+          processing_time_ms: 1800
+          response_type: "general_legal_education"
+
+    - title: "Criminal Law Overview"
+      input:
+        query: "What's the difference between misdemeanor and felony?"
+      output:
+        success: true
+        legal_response:
+          disclaimer: "**Legal Information Disclaimer**: I am an AI assistant providing general legal information for educational purposes..."
+          educational_content: "Misdemeanors are less serious crimes with shorter sentences, while felonies are serious crimes with longer prison terms..."
+          key_concepts: ["misdemeanor", "felony", "criminal law", "sentencing"]
+          when_to_consult_attorney: "Always consult a criminal defense attorney for any criminal charges..."
+        metadata:
+          processing_time_ms: 2200
+          response_type: "general_legal_education"
+
+  best_practices:
+    for_developers:
+      - "Always include mandatory disclaimers at the beginning of responses"
+      - "Maintain clear boundaries around legal advice provision"
+      - "Implement safety protocols for sensitive legal topics"
+      - "Use general language, avoiding specific case applications"
+      - "Regularly review and update disclaimer language"
+
+    for_orchestrators:
+      - "Route general legal education queries to this agent"
+      - "Monitor for attempts to circumvent disclaimer requirements"
+      - "Implement additional validation for sensitive legal topics"
+      - "Consider longer timeouts for complex legal explanations"
+      - "Maintain audit logs for compliance purposes"
+
+  installation: |
+    Required packages:
+    pip install agno openai python-dotenv
+
+    Optional packages:
+    pip install mem0ai  # For memory features
+    pip install sqlalchemy psycopg[binary] pgvector  # For PostgreSQL vector database
+
+    Environment variables:
+    OPENAI_API_KEY=your_openai_api_key          # OR
+    OPENROUTER_API_KEY=your_openrouter_api_key  # Alternative to OpenAI
+    MEM0_API_KEY=your_mem0_api_key              # Optional
+    DATABASE_URL=postgresql://...              # Optional for vector database
+
+  versioning:
+    - version: "1.0.0"
+      date: "2026-01-11"
+      changes: "Initial release with legal education focus, disclaimer management, and optional memory/database support"
+
+# Assessment fields for skill negotiation
+assessment:
+  keywords:
+    - legal
+    - law
+    - attorney
+    - lawyer
+    - contract
+    - will
+    - criminal
+    - civil
+    - lawsuit
+    - litigation
+    - agreement
+    - terms
+    - disclaimer
+    - consultation
+    - referral
+
+  specializations:
+    - domain: legal_education
+      confidence_boost: 0.3
+    - domain: general_legal_concepts
+      confidence_boost: 0.3
+    - domain: attorney_referral
+      confidence_boost: 0.2
+    - domain: compliance_information
+      confidence_boost: 0.2
+
+  anti_patterns:
+    - "represent me in court"
+    - "draft legal documents"
+    - "specific legal advice"
+    - "case strategy"
+    - "emergency legal help"
+    - "interpret laws for my situation"
+    - "predict court outcomes"
+    - "what should I do legally"
+
+  complexity_indicators:
+    simple:
+      - "define legal term"
+      - "basic concept explanation"
+      - "general procedure overview"
+    medium:
+      - "compare legal concepts"
+      - "explain multiple elements"
+      - "describe common procedures"
+    complex:
+      - "complex legal analysis"
+      - "multiple jurisdiction considerations"
+      - "detailed procedural explanations"
