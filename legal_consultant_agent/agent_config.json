@@ -4,35 +4,31 @@
   "description": "AI-powered legal information assistant providing general legal education, explanations of legal concepts, and referrals to qualified attorneys. NOT a substitute for professional legal advice. Always consult licensed attorneys for legal matters.",
   "version": "1.0.0",
   "recreate_keys": false,
-  
   "skills": [
     "skills/legal-consultant"
   ],
-  
   "capabilities": {},
-  
   "agent_trust": "low",
   "debug_mode": true,
   "debug_level": 2,
-  
   "deployment": {
     "url": "http://127.0.0.1:3773",
     "expose": true,
     "protocol_version": "1.0.0",
-    "proxy_urls": ["127.0.0.1"],
-    "cors_origins": ["*"]
+    "proxy_urls": [
+      "127.0.0.1"
+    ],
+    "cors_origins": [
+      "*"
+    ]
   },
-  
   "storage": {
     "type": "memory"
   },
-  
   "scheduler": {
     "type": "memory"
   },
-  
   "num_history_sessions": 5,
-  
   "environment_variables": [
     {
       "key": "OPENAI_API_KEY",

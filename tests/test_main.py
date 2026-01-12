@@ -1,7 +1,8 @@
-import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from legal_consultant_agent.main import handler, initialize_agent, APIKeyError
+import pytest
+
+from legal_consultant_agent.main import APIKeyError, handler
 
 
 @pytest.mark.asyncio
@@ -15,8 +16,10 @@ async def test_handler_returns_response():
     mock_response.status = "COMPLETED"
 
     # Mock _initialized to skip initialization and run_agent to return our mock
-    with patch("legal_consultant_agent.main._initialized", True), \
-         patch("legal_consultant_agent.main.run_agent", new_callable=AsyncMock, return_value=mock_response):
+    with (
+        patch("legal_consultant_agent.main._initialized", True),
+        patch("legal_consultant_agent.main.run_agent", new_callable=AsyncMock, return_value=mock_response),
+    ):
         result = await handler(messages)
 
     # Verify we get a result back
@@ -36,8 +39,10 @@ async def test_handler_with_multiple_messages():
     mock_response = MagicMock()
     mock_response.run_id = "test-run-id-2"
 
-    with patch("legal_consultant_agent.main._initialized", True), \
-         patch("legal_consultant_agent.main.run_agent", new_callable=AsyncMock, return_value=mock_response) as mock_run:
+    with (
+        patch("legal_consultant_agent.main._initialized", True),
+        patch("legal_consultant_agent.main.run_agent", new_callable=AsyncMock, return_value=mock_response) as mock_run,
+    ):
         result = await handler(messages)
 
     # Verify run_agent was called
@@ -138,19 +143,19 @@ async def test_handler_requires_api_key():
     """Test that handler raises error when no API key is provided."""
     messages = [{"role": "user", "content": "Test"}]
 
+    # Configure the lock to work as an async context manager
+    mock_lock_instance = MagicMock()
+    mock_lock_instance.__aenter__ = AsyncMock(return_value=None)
+    mock_lock_instance.__aexit__ = AsyncMock(return_value=None)
+
     with (
         patch("legal_consultant_agent.main._initialized", False),
         patch("legal_consultant_agent.main.initialize_agent", side_effect=APIKeyError("No API key")),
-        patch("legal_consultant_agent.main._init_lock", new_callable=MagicMock()),
+        patch("legal_consultant_agent.main._init_lock", return_value=mock_lock_instance),
+        patch("legal_consultant_agent.main.run_agent", new_callable=AsyncMock),
+        pytest.raises(APIKeyError, match="No API key"),
     ):
-        # Configure the lock to work as an async context manager
-        mock_lock_instance = MagicMock()
-        mock_lock_instance.__aenter__ = AsyncMock(return_value=None)
-        mock_lock_instance.__aexit__ = AsyncMock(return_value=None)
-        
-        with patch("legal_consultant_agent.main._init_lock", return_value=mock_lock_instance):
-            with pytest.raises(APIKeyError, match="No API key"):
-                await handler(messages)
+        await handler(messages)
 
 
 @pytest.mark.asyncio
@@ -161,6 +166,6 @@ async def test_handler_agent_not_initialized():
     with (
         patch("legal_consultant_agent.main._initialized", True),
         patch("legal_consultant_agent.main.run_agent", side_effect=RuntimeError("Agent not initialized")),
+        pytest.raises(RuntimeError, match="Agent not initialized"),
     ):
-        with pytest.raises(RuntimeError, match="Agent not initialized"):
-            await handler(messages)
+        await handler(messages)
