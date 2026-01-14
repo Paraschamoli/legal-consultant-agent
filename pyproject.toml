@@ -8,7 +8,7 @@ keywords = ["python", "ai", "legal", "consultant", "agno", "bindu", "memory", "v
 requires-python = ">=3.12,<3.13"
 
 dependencies = [
-    "bindu>=2026.1.7",
+    "bindu>=2026.1.12",
     "agno>=2.2.0",
     "fastmcp>=2.11.0",
     "requests>=2.31.0",
@@ -37,7 +37,7 @@ classifiers = [
 [project.urls]
 Homepage = "https://Paraschamoli.github.io/legal-consultant-agent/"
 Repository = "https://github.com/Paraschamoli/legal-consultant-agent"
-Documentation = "https://Paraschamoli.github.io/legal-consultant-agent/"
+Documentation = "https://github.com/Paraschamoli/legal-consultant-agent#readme"
 Issues = "https://github.com/Paraschamoli/legal-consultant-agent/issues"
 Changelog = "https://github.com/Paraschamoli/legal-consultant-agent/releases"
 
