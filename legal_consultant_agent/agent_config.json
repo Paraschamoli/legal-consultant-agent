@@ -33,7 +33,7 @@
     {
       "key": "OPENROUTER_API_KEY",
       "description": "OpenRouter API key for LLM calls (alternative to OpenAI)",
-      "required": false
+      "required": true
     },
     {
       "key": "MODEL_NAME",
