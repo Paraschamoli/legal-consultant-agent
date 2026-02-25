@@ -6,9 +6,8 @@ author: paras25619@gmail.com
 # Description
 description: |
   AI-powered legal information assistant providing general legal education and guidance.
-  This skill helps users understand legal concepts, terminology, and procedures while
-  emphasizing that it is NOT a substitute for professional legal advice. It always
-  includes mandatory disclaimers and referrals to qualified attorneys for actual legal matters.
+  Coordinates to provide educational content with mandatory disclaimers and attorney referrals.
+  Built on Agno framework with OpenRouter models and structured output.
 
 # Tags and Modes
 tags:
@@ -17,10 +16,6 @@ tags:
   - education
   - information
   - law
-  - attorney-referral
-  - disclaimer
-  - compliance
-  - risk-management
 
 input_modes:
   - text/plain
@@ -29,37 +24,45 @@ input_modes:
 output_modes:
   - text/plain
   - application/json
-  - text/markdown
 
 # Example Queries
 examples:
-  - "Explain what constitutes a breach of contract in simple terms"
-  - "What are the basic elements required for a valid will?"
+  - "Explain the legal implications of terminating an employee for poor performance in India."
+  - "What are the basic elements of a valid contract?"
   - "How does the statute of limitations work for personal injury cases?"
-  - "What's the difference between a misdemeanor and a felony?"
-  - "What should I consider before signing a rental agreement?"
-  - "How does intellectual property protection work for small businesses?"
-  - "What are the general steps in a civil litigation process?"
-  - "Explain the concept of 'due process' in the legal system"
+
+# Detailed Capabilities
+capabilities_detail:
+  primary_capability:
+    supported: true
+    description: "Provides general legal information and educational guidance with disclaimers"
+    features:
+      - "Educational legal content with mandatory disclaimers"
+      - "Referral guidance to professional attorneys"
+      - "General legal concepts and procedures"
+    limitations: "Not legal advice, focused on general education only"
+
+  secondary_capability:
+    supported: false
+    planned_version: "2.0.0"
+    description: "Jurisdiction-specific legal analysis and document review"
 
 # Requirements
 requirements:
   packages:
-    - agno>=2.2.0
-    - openai>=2.11.0
-    - python-dotenv>=1.0.1
-  system: []
-  min_memory_mb: 512
-  external_services:
-    - OpenAI API or OpenRouter API (for LLM capabilities)
-    - Mem0 API (optional, for memory operations)
-    - PostgreSQL (optional, for vector database)
+    - "agno"
+    - "openai"
+    - "python-dotenv"
+    - "bindu"
+  system:
+    - "Python 3.12+"
+  min_memory_mb: 256
 
 # Performance Metrics
 performance:
   avg_processing_time_ms: 8000
-  max_concurrent_requests: 3
-  memory_per_request_mb: 512
+  max_concurrent_requests: 5
+  memory_per_request_mb: 256
   scalability: horizontal
 
 # Tool Restrictions
@@ -67,190 +70,193 @@ allowed_tools:
   - Mem0Tools
   - Think
   - Analyze
-  - Reason
-  - Extract
-  - ReasoningTools
-
 # Rich Documentation
 documentation:
   overview: |
-    This skill specializes in providing general legal information and educational guidance
-    while maintaining strict boundaries to avoid unauthorized practice of law. It always
-    includes clear disclaimers, emphasizes the importance of consulting qualified attorneys,
-    and provides referral guidance for professional legal help.
+    AI legal consultant providing general legal education and guidance.
+    Uses Agno framework with OpenRouter models and structured output.
+    Built for educational purposes with mandatory disclaimers and attorney referrals.
 
   use_cases:
     when_to_use:
-      - Learning basic legal concepts and terminology
-      - Understanding general legal procedures
-      - Getting preliminary information before attorney consultation
-      - Educational research about legal systems
-      - Understanding when professional legal help is needed
+      - "Learning basic legal concepts and terminology"
+      - "Understanding general legal procedures"
+      - "Getting preliminary information before attorney consultation"
 
     when_not_to_use:
-      - Specific legal advice for personal situations
-      - Interpretation of laws for individual cases
-      - Legal document preparation or review
-      - Predictions about legal outcomes
-      - Strategy recommendations for legal matters
-      - Emergency legal situations
+      - "Specific legal advice for personal situations"
+      - "Legal document preparation or review"
+      - "Emergency legal situations"
 
   input_structure: |
-    Accepts legal education queries with emphasis on general concepts:
+    JSON-RPC 2.0 message with user query in parts array.
 
+    Example:
     {
-      "query": "Legal topic or question",
-      "detail_level": "basic|detailed",  # Optional
-      "jurisdiction_context": "general|US|UK|CA"  # Optional
+      "jsonrpc": "2.0",
+      "method": "message/send",
+      "params": {
+        "message": {
+          "role": "user",
+          "parts": [
+            {
+              "kind": "text",
+              "text": "Explain the legal implications of terminating an employee for poor performance in India."
+            }
+          ],
+          "kind": "message",
+          "messageId": "299bb30f-1e2b-47f5-a1a9-e83f0f5c7401",
+          "contextId": "299bb30f-1e2b-47f5-a1a9-e83f0f5c7402",
+          "taskId": "299bb30f-1e2b-47f5-a1a9-e83f0f5c7403"
+        },
+        "skillId": "legal-consultant-v1",
+        "configuration": {
+          "acceptedOutputModes": [
+            "application/json"
+          ]
+        }
+      },
+      "id": "299bb30f-1e2b-47f5-a1a9-e83f0f5c7404"
     }
 
-    Constraints:
-    - Max query length: 500 characters
-    - Timeout: 120 seconds
-    - Language: English primary
-    - Scope: General legal education only
-
   output_format: |
-    Structured Legal Information Output:
+    JSON-RPC 2.0 result with task history and artifacts containing legal response.
+
+    Success Response:
     {
-      "success": true,
-      "legal_response": {
-        "disclaimer": "Mandatory legal disclaimer text...",
-        "educational_content": "General legal information and explanations...",
-        "key_concepts": ["concept1", "concept2", "concept3"],
-        "important_considerations": ["consideration1", "consideration2"],
-        "when_to_consult_attorney": "Guidance on seeking professional help...",
-        "additional_resources": ["resource1", "resource2"]
-      },
-      "metadata": {
-        "query": "original_query",
-        "processing_time_ms": 2500,
-        "response_type": "general_legal_education",
-        "disclaimer_included": true,
-        "jurisdiction_context": "general"
+      "jsonrpc": "2.0",
+      "id": "299bb30f-1e2b-47f5-a1a9-e83f0f5c7405",
+      "result": {
+        "id": "299bb30f-1e2b-47f5-a1a9-e83f0f5c7403",
+        "context_id": "299bb30f-1e2b-47f5-a1a9-e83f0f5c7402",
+        "kind": "task",
+        "status": {
+          "state": "completed",
+          "timestamp": "2026-02-25T17:38:48.914664+00:00"
+        },
+        "history": [
+          {
+            "message_id": "299bb30f-1e2b-47f5-a1a9-e83f0f5c7401",
+            "context_id": "299bb30f-1e2b-47f5-a1a9-e83f0f5c7402",
+            "task_id": "299bb30f-1e2b-47f5-a1a9-e83f0f5c7403",
+            "kind": "message",
+            "parts": [
+              {
+                "kind": "text",
+                "text": "Explain the legal implications of terminating an employee for poor performance in India."
+              }
+            ],
+            "role": "user"
+          },
+          {
+            "role": "assistant",
+            "parts": [
+              {
+                "kind": "text",
+                "text": "**Legal Information Disclaimer**: I am an AI assistant providing general legal information for educational purposes..."
+              }
+            ],
+            "kind": "message",
+            "message_id": "89e02244-391a-4b06-9c0c-44b5dac397cc",
+            "task_id": "299bb30f-1e2b-47f5-a1a9-e83f0f5c7403",
+            "context_id": "299bb30f-1e2b-47f5-a1a9-e83f0f5c7402"
+          }
+        ],
+        "artifacts": [
+          {
+            "artifact_id": "5f96c82b-226b-448b-83d1-8a8c5cb2a27c",
+            "name": "result",
+            "parts": [
+              {
+                "kind": "text",
+                "text": "**Legal Information Disclaimer**: I am an AI assistant providing general legal information for educational purposes...",
+                "metadata": {
+                  "did.message.signature": "293DaZCoKBSp2GqF7uU5Crg3ugKg3nvpdbtzQt91NWFvKm8HHjZkmYKhJ4yGfZNoG1EEKQSja6BAc3KxPQMLWDV2"
+                }
+              }
+            ]
+          }
+        ]
       }
     }
 
   error_handling:
     - "Specific legal advice requests: Politely decline and refer to attorneys"
     - "Complex case analysis: Acknowledge limitations and suggest professional consultation"
-    - "Jurisdiction-specific questions: Note general principles and suggest local counsel"
-    - "Emergency situations: Recommend immediate professional consultation"
-    - "Ethical boundaries: Explain limitations and maintain professional boundaries"
+    - "Timeout: 30-second limit per request"
+    - "Invalid queries: Return error message with guidance"
 
   examples:
-    - title: "Contract Law Basics"
+    - title: "Employee Termination Legal Implications"
       input:
-        query: "What are the basic elements of a valid contract?"
-        detail_level: "basic"
+        parts:
+          - kind: "text"
+            text: "Explain the legal implications of terminating an employee for poor performance in India."
       output:
-        success: true
-        legal_response:
-          disclaimer: "**Legal Information Disclaimer**: I am an AI assistant providing general legal information for educational purposes..."
-          educational_content: "A valid contract typically requires: 1) Offer, 2) Acceptance, 3) Consideration, 4) Capacity, 5) Legality..."
-          key_concepts: ["offer", "acceptance", "consideration", "capacity", "legality"]
-          when_to_consult_attorney: "Consult an attorney when drafting, reviewing, or disputing contracts..."
-        metadata:
-          processing_time_ms: 1800
-          response_type: "general_legal_education"
+        text: |
+          **Legal Information Disclaimer**: I am an AI assistant providing general legal information for educational purposes...
 
-    - title: "Criminal Law Overview"
-      input:
-        query: "What's the difference between misdemeanor and felony?"
-      output:
-        success: true
-        legal_response:
-          disclaimer: "**Legal Information Disclaimer**: I am an AI assistant providing general legal information for educational purposes..."
-          educational_content: "Misdemeanors are less serious crimes with shorter sentences, while felonies are serious crimes with longer prison terms..."
-          key_concepts: ["misdemeanor", "felony", "criminal law", "sentencing"]
-          when_to_consult_attorney: "Always consult a criminal defense attorney for any criminal charges..."
-        metadata:
-          processing_time_ms: 2200
-          response_type: "general_legal_education"
+          In India, terminating an employee for poor performance involves several legal considerations...
 
   best_practices:
     for_developers:
-      - "Always include mandatory disclaimers at the beginning of responses"
-      - "Maintain clear boundaries around legal advice provision"
-      - "Implement safety protocols for sensitive legal topics"
-      - "Use general language, avoiding specific case applications"
-      - "Regularly review and update disclaimer language"
+      - "Always include mandatory disclaimers in responses"
+      - "Maintain boundaries around legal advice"
+      - "Use general language for educational content"
 
     for_orchestrators:
-      - "Route general legal education queries to this agent"
-      - "Monitor for attempts to circumvent disclaimer requirements"
-      - "Implement additional validation for sensitive legal topics"
-      - "Consider longer timeouts for complex legal explanations"
-      - "Maintain audit logs for compliance purposes"
+      - "Route general legal education queries to this skill"
+      - "Expect 8-15 second processing time per request"
+      - "Monitor for disclaimer compliance"
 
   installation: |
-    Required packages:
-    pip install agno openai python-dotenv
+    Install via uv package manager.
 
-    Optional packages:
-    pip install mem0ai  # For memory features
-    pip install sqlalchemy psycopg[binary] pgvector  # For PostgreSQL vector database
+    Required packages:
+    uv sync
 
     Environment variables:
-    OPENAI_API_KEY=your_openai_api_key          # OR
-    OPENROUTER_API_KEY=your_openrouter_api_key  # Alternative to OpenAI
-    MEM0_API_KEY=your_mem0_api_key              # Optional
-    DATABASE_URL=postgresql://...              # Optional for vector database
+    OPENAI_API_KEY=<your-key>
+    OPENROUTER_API_KEY=<your-key>
+    MEM0_API_KEY=<your-key>
+
+    Run:
+    uv run python -m legal_consultant_agent
 
   versioning:
     - version: "1.0.0"
       date: "2026-01-11"
-      changes: "Initial release with legal education focus, disclaimer management, and optional memory/database support"
+      changes: "Initial release with legal education focus and disclaimer management"
 
 # Assessment fields for skill negotiation
 assessment:
   keywords:
-    - legal
-    - law
-    - attorney
-    - lawyer
-    - contract
-    - will
-    - criminal
-    - civil
-    - lawsuit
-    - litigation
-    - agreement
-    - terms
-    - disclaimer
-    - consultation
-    - referral
+    - "legal"
+    - "law"
+    - "contract"
+    - "employee"
+    - "termination"
+    - "consultant"
+    - "attorney"
 
   specializations:
-    - domain: legal_education
-      confidence_boost: 0.3
-    - domain: general_legal_concepts
-      confidence_boost: 0.3
-    - domain: attorney_referral
-      confidence_boost: 0.2
-    - domain: compliance_information
+    - domain: "legal_education"
+      confidence_boost: 0.8
+    - domain: "general_legal_concepts"
       confidence_boost: 0.2
 
   anti_patterns:
-    - "represent me in court"
-    - "draft legal documents"
-    - "specific legal advice"
-    - "case strategy"
-    - "emergency legal help"
-    - "interpret laws for my situation"
-    - "predict court outcomes"
-    - "what should I do legally"
+    - "Specific legal advice"
+    - "Legal document review"
+    - "Emergency legal help"
 
   complexity_indicators:
     simple:
-      - "define legal term"
-      - "basic concept explanation"
-      - "general procedure overview"
+      - "Explain basic legal term"
+      - "General legal concept"
     medium:
-      - "compare legal concepts"
-      - "explain multiple elements"
-      - "describe common procedures"
+      - "Compare legal concepts"
+      - "Describe legal procedures"
     complex:
-      - "complex legal analysis"
-      - "multiple jurisdiction considerations"
-      - "detailed procedural explanations"
+      - "Complex legal analysis"
+      - "Multiple jurisdiction considerations"
