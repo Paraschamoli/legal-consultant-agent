@@ -20,7 +20,34 @@
   <a href="https://img.shields.io/badge/python-3.12-blue">
     <img src="https://img.shields.io/badge/python-3.12-blue" alt="Python 3.12">
   </a>
+  <a href="https://img.shields.io/badge/version-1.0.0-blue">
+    <img src="https://img.shields.io/badge/version-1.0.0-blue" alt="Version 1.0.0">
+  </a>
 </p>
+
+---
+
+## Table of Contents
+
+- [🎯 What is Legal Consultant Agent?](#-what-is-legal-consultant-agent)
+  - [Key Features](#key-features)
+  - [Built-in Tools](#built-in-tools)
+  - [Core Principles](#core-principles)
+- [🏗️ Architecture](#️-architecture)
+- [🚀 Quick Start](#-quick-start)
+- [🔧 Configuration](#-configuration)
+- [💡 Usage Examples](#-usage-examples)
+- [🔌 API Reference](#-api-reference)
+- [🐳 Docker Deployment](#-docker-deployment)
+- [📁 Project Structure](#-project-structure)
+- [🧪 Testing](#-testing)
+- [🚨 Troubleshooting](#-troubleshooting)
+- [📊 Dependencies](#-dependencies)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
+- [🙏 Credits & Acknowledgments](#-credits--acknowledgments)
+- [🔗 Useful Links](#-useful-links)
+- [📝 Changelog](#-changelog)
 
 ---
 
@@ -35,6 +62,7 @@ An AI-powered assistant that provides general legal information and educational 
 *   **💾 Knowledge Base** - Optional PostgreSQL/pgvector for legal documents
 *   **🔗 Professional Referrals** - Guidance on finding qualified attorneys
 *   **🛡️ Safety Protocols** - Never provides legal advice or strategy
+*   **🎯 Skill-Based Architecture** - Modular skills for different legal topics
 
 ### Built-in Tools
 *   **Mem0Tools** - Optional conversation memory for context retention
@@ -46,6 +74,36 @@ An AI-powered assistant that provides general legal information and educational 
 2.  **Clear Disclaimers** - Every response starts with appropriate warnings
 3.  **Professional Referral** - Always recommends consulting licensed attorneys
 4.  **Ethical Boundaries** - Never crosses into unauthorized practice of law
+
+---
+
+## 🏗️ Architecture
+
+The Legal Consultant Agent is built using modern AI agent frameworks and follows a modular, skill-based architecture designed for scalability and maintainability.
+
+### Core Components
+
+*   **Agno Framework** - Provides the agent orchestration and tool integration
+*   **Bindu Platform** - Handles deployment, API management, and agent discovery
+*   **Skill System** - Modular skills for different legal education topics
+*   **LLM Integration** - Support for multiple LLM providers (OpenAI, OpenRouter)
+*   **Memory & Knowledge** - Optional Mem0 for conversation memory and PostgreSQL for document storage
+
+### Agent Flow
+
+1.  **Request Processing** - Incoming queries are processed through Bindu's JSON-RPC interface
+2.  **Skill Matching** - The appropriate skill is selected based on the query type
+3.  **LLM Processing** - The query is processed by the configured LLM with safety instructions
+4.  **Response Generation** - Educational content is generated with mandatory disclaimers
+5.  **Memory Integration** - Conversation context is maintained via Mem0 (optional)
+6.  **Response Delivery** - Structured response is returned via the API
+
+### Safety Architecture
+
+*   **Mandatory Disclaimers** - Every response includes legal disclaimers
+*   **Boundary Enforcement** - Strict instructions prevent unauthorized legal advice
+*   **Ethical Guidelines** - Core principles embedded in agent instructions
+*   **Referral Integration** - Automatic guidance to professional legal help
 
 ---
 
@@ -122,7 +180,54 @@ DATABASE_URL=postgresql+psycopg://username:password@host:port/database  # Option
 ### Port Configuration
 Default port: `3773` (can be changed in `agent_config.json`)
 
+## 🎯 Skill Configuration
+
+The agent uses a skill-based architecture defined in `legal_consultant_agent/skills/legal-consultant/skill.yaml`. This configuration file defines:
+
+*   **Skill Metadata** - ID, name, version, and capabilities
+*   **Input/Output Modes** - Supported formats (text, JSON)
+*   **Requirements** - Dependencies, system requirements, and performance metrics
+*   **Documentation** - Detailed capabilities, use cases, and examples
+*   **Assessment** - Keywords, specializations, and anti-patterns for skill negotiation
+
+The skill configuration enables the agent to be discoverable and interoperable within the Bindu ecosystem.
+
 ## 💡 Usage Examples
+
+### Via JSON-RPC API
+
+The agent supports JSON-RPC 2.0 for structured interactions:
+
+```bash
+curl --location 'http://localhost:3773' \
+--header 'Content-Type: application/json' \
+--data '{
+  "jsonrpc": "2.0",
+  "method": "message/send",
+  "params": {
+    "message": {
+      "role": "user",
+      "parts": [
+        {
+          "kind": "text",
+          "text": "Explain the legal implications of terminating an employee for poor performance in India."
+        }
+      ],
+      "kind": "message",
+      "messageId": "299bb30f-1e2b-47f5-a1a9-e83f0f5c7401",
+      "contextId": "299bb30f-1e2b-47f5-a1a9-e83f0f5c7402",
+      "taskId": "299bb30f-1e2b-47f5-a1a9-e83f0f5c7403"
+    },
+    "skillId": "legal-consultant-v1",
+    "configuration": {
+      "acceptedOutputModes": [
+        "application/json"
+      ]
+    }
+  },
+  "id": "299bb30f-1e2b-47f5-a1a9-e83f0f5c7404"
+}'
+```
 
 ### Via HTTP API
 
@@ -391,5 +496,18 @@ MIT License - see LICENSE file for details.
   <a href="https://github.com/ParasChamoli/legal-consultant-agent/issues">🐛 Report Issues</a>
 </p>
 
+## 📝 Changelog
+
+### [1.0.0] - 2026-01-11
+- Initial release with legal education focus and disclaimer management
+- Skill-based architecture with legal-consultant skill
+- Support for multiple LLM providers (OpenAI, OpenRouter)
+- Optional memory integration with Mem0
+- Optional knowledge base with PostgreSQL/pgvector
+- JSON-RPC and HTTP API interfaces
+- Docker deployment support
+- Comprehensive documentation and examples
+
 ---
+
 *Note: This agent provides general legal information for educational purposes only. It is NOT a substitute for professional legal advice. Always consult qualified attorneys for legal matters. Powered by AI with ethical boundaries in place.*

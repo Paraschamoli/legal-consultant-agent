@@ -227,6 +227,9 @@ documentation:
     - version: "1.0.0"
       date: "2026-01-11"
       changes: "Initial release with legal education focus and disclaimer management"
+    - version: "1.1.0"
+      status: "planned"
+      changes: "Add jurisdiction-specific legal analysis and document review"
 
 # Assessment fields for skill negotiation
 assessment:

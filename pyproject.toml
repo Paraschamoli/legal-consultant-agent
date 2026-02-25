@@ -1,6 +1,6 @@
 [project]
 name = "legal-consultant-agent"
-version = "0.1.0"
+version = "1.0.0"
 description = "AI-powered legal information assistant providing general legal education, explanations of legal concepts, and referrals to qualified attorneys. NOT a substitute for professional legal advice."
 authors = [{ name = "Paras Chamoli", email = "paras25619@gmail.com" }]
 readme = "README.md"
