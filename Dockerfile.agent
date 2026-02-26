@@ -31,7 +31,7 @@ FROM raahulrahl/bindu-runtime-base:latest
 # OCI labels
 LABEL org.opencontainers.image.title="legal-consultant-agent"
 LABEL org.opencontainers.image.description="A Legal Consultant Agent is an AI-powered assistant that helps with legal research and analysis by interpreting laws, contracts, and case materials, summarizing key legal points, identifying risks and compliance issues, and providing structured, easy-to-understand legal insights to support informed decision-making."
-LABEL org.opencontainers.image.authors="Paras Chamoli <paras25619@gmail.com>"
+LABEL org.opencontainers.image.authors="Paras Chamoli <paras@getbindu.com>"
 LABEL org.opencontainers.image.version="1.0.0"
 LABEL org.opencontainers.image.source="https://github.com/Paraschamoli/legal-consultant-agent"
 LABEL org.opencontainers.image.licenses="MIT"

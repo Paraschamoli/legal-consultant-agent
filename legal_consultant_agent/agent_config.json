@@ -1,5 +1,5 @@
 {
-  "author": "paras25619@gmail.com",
+  "author": "paras@getbindu.com",
   "name": "legal-consultant-agent",
   "description": "AI-powered legal information assistant providing general legal education, explanations of legal concepts, and referrals to qualified attorneys. NOT a substitute for professional legal advice. Always consult licensed attorneys for legal matters.",
   "version": "1.0.0",
@@ -30,19 +30,9 @@
       "required": true
     },
     {
-      "key": "MODEL_NAME",
-      "description": "Model ID for OpenRouter (default: openai/gpt-4o)",
-      "required": false
-    },
-    {
       "key": "MEM0_API_KEY",
       "description": "Mem0 API key for memory operations",
       "required": true
-    },
-    {
-      "key": "DATABASE_URL",
-      "description": "PostgreSQL database URL for vector database (optional)",
-      "required": false
     }
   ]
 }
