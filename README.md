@@ -25,6 +25,8 @@
   </a>
 </p>
 
+[Postman Collection](https://raahul-1409c5b4-717533.postman.co/workspace/getbindu's-Workspace~44eb7cfe-a752-4114-8a1a-631395f07bf1/collection/50606358-737182ea-f855-4966-bb2d-d6a3f8e3c1ef?action=share&creator=50606358)
+
 ---
 
 ## Table of Contents
